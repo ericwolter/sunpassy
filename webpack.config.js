@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest')
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
   entry: './src/index.js',
@@ -11,7 +11,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './src/index.ejs',
       minify: {
-        collapseWhitespace: true,
+        collapseWhitespace: false,
         removeComments: true,
         removeRedundantAttributes: true,
         removeScriptTypeAttributes: true,
@@ -25,11 +25,18 @@ module.exports = {
       description: 'sunpassy is a handy companion for your sun-infused travels.',
       background_color: '#faf7f5',
       theme_color: '#ffcc00',
-      ios: true,
+      ios: {
+        'apple-mobile-web-app-status-bar-style': 'black-translucent'
+      },
       icons: [
         {
-          src: path.resolve('logo.png'),
-          sizes: [96, 128, 192, 256, 384, 512, 1024] // multiple sizes
+          src: path.resolve('./logo.png'),
+          sizes: [192],
+        },
+        {
+          src: path.resolve('./logo.png'),
+          sizes: [120, 152, 167, 180, 1024], // multiple sizes
+          ios: true
         }
       ]
     }),
