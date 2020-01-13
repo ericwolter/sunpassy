@@ -28,6 +28,7 @@ module.exports = {
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
+      // swSrc: "./src/sw.js",
       swDest: "sw.js",
       runtimeCaching: [{
         urlPattern: new RegExp('^https://maps\.googleapis\.com/'),
@@ -58,7 +59,8 @@ module.exports = {
         test: /\.css$/,
         use: [
           'style-loader',
-          'css-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader'
         ],
       },
     ],
