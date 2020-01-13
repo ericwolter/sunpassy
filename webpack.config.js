@@ -9,7 +9,8 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/index.ejs'
+      template: './src/index.ejs',
+      minify: true
     }),
     new WebpackPwaManifest({
       name: 'sunpassy',
