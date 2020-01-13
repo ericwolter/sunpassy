@@ -5,7 +5,6 @@ const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
-  mode: 'development',
   entry: './src/index.js',
   plugins: [
     new CleanWebpackPlugin(),
@@ -18,6 +17,13 @@ module.exports = {
       description: 'sunpassy is a handy companion for your sun-infused travels.',
       background_color: '#faf7f5',
       theme_color: '#ffcc00',
+      ios: true,
+      icons: [
+        {
+          src: path.resolve('logo.png'),
+          sizes: [96, 128, 192, 256, 384, 512, 1024] // multiple sizes
+        }
+      ]
     }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
@@ -42,11 +48,6 @@ module.exports = {
       }]
     }),
   ],
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './dist',
-    hot: true,
-  },
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
