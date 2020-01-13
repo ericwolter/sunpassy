@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest')
 
 module.exports = {
   mode: 'development',
@@ -10,6 +11,13 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/index.ejs'
+    }),
+    new WebpackPwaManifest({
+      name: 'sunpassy',
+      short_name: 'sunpassy',
+      description: 'sunpassy is a handy companion for your sun-infused travels.',
+      background_color: '#faf7f5',
+      theme_color: '#ffcc00',
     }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
