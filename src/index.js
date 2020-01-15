@@ -1,6 +1,10 @@
 import 'normalize.css';
 import './style.css';
 
+import svgMoon from './moon.svg';
+import svgSunLeft from './sun_left.svg';
+import svgSunRight from './sun_right.svg';
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(registration => {
@@ -138,7 +142,6 @@ function calculatePredominantSunDirection(step) {
 
 function* parseRoutesFromData(data) {
   for (const route of data.routes) {
-    console.log('#############');
     const routeNode = document.createElement('div');
     routeNode.classList.add('route');
 
@@ -148,23 +151,25 @@ function* parseRoutesFromData(data) {
     const routeHeaderNode = document.createElement('header');
     routeNode.appendChild(routeHeaderNode);
 
-    const routeOriginNode = document.createElement('div');
-    routeOriginNode.textContent = firstLeg.start_address.toLocaleUpperCase();
-    routeHeaderNode.appendChild(routeOriginNode);
-
     const routeOriginTimeNode = document.createElement('time');
     routeOriginTimeNode.setAttribute("datetime", firstLeg.departure_time.value);
-    routeOriginTimeNode.textContent = firstLeg.departure_time.value.toLocaleString();
+    routeOriginTimeNode.textContent = firstLeg.departure_time.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     routeHeaderNode.appendChild(routeOriginTimeNode);
-
-    const routeDestinationNode = document.createElement('div');
-    routeDestinationNode.textContent = lastLeg.end_address.toLocaleUpperCase();
-    routeHeaderNode.appendChild(routeDestinationNode);
 
     const routeDestinationTimeNode = document.createElement('time');
     routeDestinationTimeNode.setAttribute("datetime", lastLeg.arrival_time.value);
-    routeDestinationTimeNode.textContent =  lastLeg.arrival_time.value.toLocaleString();
+    routeDestinationTimeNode.textContent =  lastLeg.arrival_time.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     routeHeaderNode.appendChild(routeDestinationTimeNode);
+
+    const routeOriginNode = document.createElement('div');
+    routeOriginNode.textContent = firstLeg.start_address.toLocaleUpperCase();
+    routeOriginNode.classList.add('route-station');
+    routeHeaderNode.appendChild(routeOriginNode);
+
+    const routeDestinationNode = document.createElement('div');
+    routeDestinationNode.textContent = lastLeg.end_address.toLocaleUpperCase();
+    routeDestinationNode.classList.add('route-station');
+    routeHeaderNode.appendChild(routeDestinationNode);
 
     for (const leg of route.legs) {
       const legNode = document.createElement('div');
@@ -174,29 +179,44 @@ function* parseRoutesFromData(data) {
         if(step.travel_mode === 'WALKING') {
           continue;
         }
+        const direction = calculatePredominantSunDirection(step);
+
         const stepNode = document.createElement('div');
         stepNode.classList.add('step');
+
+        const stepDepartureTimeNode = document.createElement('time');
+        stepDepartureTimeNode.setAttribute("datetime", step.transit.departure_time.value);
+        stepDepartureTimeNode.textContent =  step.transit.departure_time.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        stepNode.appendChild(stepDepartureTimeNode);
 
         const stepDepartureNode = document.createElement('div');
         stepDepartureNode.textContent = step.transit.departure_stop.name;
         stepNode.appendChild(stepDepartureNode);
 
-        const stepDepartureTimeNode = document.createElement('time');
-        stepDepartureTimeNode.setAttribute("datetime", step.transit.departure_time.value);
-        stepDepartureTimeNode.textContent =  step.transit.departure_time.value.toLocaleTimeString();
-        stepNode.appendChild(stepDepartureTimeNode);
+        const directionNode = document.createElement('div');
+        switch (direction) {
+          case 'left':
+            directionNode.innerHTML = svgSunLeft;
+            break;
+          case 'right':
+            directionNode.innerHTML = svgSunRight;
+            break;
+          case 'night':
+            directionNode.innerHTML = svgMoon;
+            break;
+        }
+        directionNode.classList.add('direction');
+        directionNode.classList.add(direction);
+        stepNode.appendChild(directionNode);
+
+        const stepArrivalTimeNode = document.createElement('time');
+        stepArrivalTimeNode.setAttribute("datetime", step.transit.arrival_time.value);
+        stepArrivalTimeNode.textContent =  step.transit.arrival_time.value.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        stepNode.appendChild(stepArrivalTimeNode);
 
         const stepArrivalNode = document.createElement('div');
         stepArrivalNode.textContent = step.transit.arrival_stop.name;
         stepNode.appendChild(stepArrivalNode);
-
-        const stepArrivalTimeNode = document.createElement('time');
-        stepArrivalTimeNode.setAttribute("datetime", step.transit.arrival_time.value);
-        stepArrivalTimeNode.textContent =  step.transit.arrival_time.value.toLocaleTimeString();
-        stepNode.appendChild(stepArrivalTimeNode);
-
-        const direction = calculatePredominantSunDirection(step);
-        stepNode.classList.add(direction);
 
         legNode.appendChild(stepNode);
       }

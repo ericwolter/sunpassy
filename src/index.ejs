@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://maps.googleapis.com">
   </head>
-  <body>
+  <body ontouchstart="">
     <header id="search-header">
       <form>
         <input type="text" id="start" name="start" placeholder="From" value="Nuremberg" required>
@@ -17,8 +17,11 @@
         <button id="search">Search</button>
       </form>
     </header>
+    <div id="overlay">
+    </div>
     <main>
-      <div id="results"></div>
+      <div id="results">
+      </div>
     </main>
   </body>
 </html>

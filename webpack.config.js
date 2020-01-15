@@ -76,6 +76,10 @@ module.exports = {
           'postcss-loader'
         ],
       },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
+      }
     ],
   },
 };
