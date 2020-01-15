@@ -15,6 +15,8 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+document.addEventListener('touchstart', onTouchStart, {passive: true});
+
 var google_api = document.createElement('script');
 google_api.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=AIzaSyAezL4IXXGbjmg6TK4Yxryr5BqUL4f21-I');
 google_api.setAttribute('async', true);
