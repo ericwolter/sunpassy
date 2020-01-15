@@ -15,7 +15,10 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-document.addEventListener('touchstart', onTouchStart, {passive: true});
+var adsense_api = document.createElement('script')
+adsense_api.setAttribute('src', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
+adsense_api.setAttribute('async', true);
+document.head.appendChild(adsense_api);
 
 var google_api = document.createElement('script');
 google_api.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=AIzaSyAezL4IXXGbjmg6TK4Yxryr5BqUL4f21-I');
@@ -250,9 +253,25 @@ document.getElementById('search').addEventListener('click', function(ev) {
       while (resultsNode.firstChild) {
         resultsNode.removeChild(resultsNode.firstChild);
       }
+      
+      var i = 0;
       for (const routeNode of parseRoutesFromData(result)) {
+        if(i % 2 === 0) {
+          const adNode = document.createElement('ins');
+          adNode.setAttribute('class', 'adsbygoogle');
+          adNode.setAttribute('style', 'display:block');
+          adNode.setAttribute('data-ad-format', 'fluid');
+          adNode.setAttribute('data-ad-layout-key', '-gp-4+22-6q+7n');
+          adNode.setAttribute('data-ad-client', 'ca-pub-5717136270400903');
+          adNode.setAttribute('data-ad-slot', '6128457096');
+          resultsNode.appendChild(adNode);
+        }
+        i = i + 1;
+        
         resultsNode.appendChild(routeNode);
       }
+
+      (adsbygoogle = window.adsbygoogle || []).push({});
     }
   });
 });
