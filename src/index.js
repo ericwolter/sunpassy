@@ -1,5 +1,6 @@
 import 'normalize.css';
 import './style.css';
+import tags from 'language-tags';
 
 import svgMoon from './moon.svg';
 import svgSunLeft from './sun_left.svg';
@@ -20,8 +21,9 @@ adsense_api.setAttribute('src', 'https://pagead2.googlesyndication.com/pagead/js
 adsense_api.setAttribute('async', true);
 document.head.appendChild(adsense_api);
 
+const region = tags(navigator.language).region().format() || 'de';
 var google_api = document.createElement('script');
-google_api.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=AIzaSyAezL4IXXGbjmg6TK4Yxryr5BqUL4f21-I');
+google_api.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=AIzaSyAezL4IXXGbjmg6TK4Yxryr5BqUL4f21-I&region='+region);
 google_api.setAttribute('async', true);
 google_api.setAttribute('defer', true);
 document.head.appendChild(google_api);
