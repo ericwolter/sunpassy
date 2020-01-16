@@ -94,7 +94,7 @@ function calculatePredominantSunDirection(step) {
   const totalDuration = arrivalTimestamp - departureTimestamp
 
   const times = SunCalc.getTimes(departureTimestamp, step.path[0].lat(), step.path[0].lng())
-  if (departureTimestamp < times.dawn) {
+  if (arrivalTimestamp < times.dawn) {
     return 'night';
   } else if (departureTimestamp > times.dusk) {
     return 'night';
@@ -233,8 +233,13 @@ function* parseRoutesFromData(data) {
 
 document.getElementById('search').addEventListener('click', function(ev) {
   ev.preventDefault();
-  
+
+  const messageNode = document.getElementById('message-box');
+  messageNode.classList.remove('show');
+  messageNode.classList.add('hide');
+
   const directionsService = new google.maps.DirectionsService();
+
   const resultsNode = document.getElementById('results');
   const overlayNode = document.getElementById('overlay');
   overlayNode.classList.add('show');
@@ -251,7 +256,34 @@ document.getElementById('search').addEventListener('click', function(ev) {
   directionsService.route(request, function(result, status) {
     overlayNode.classList.remove('show');
     if(status !== 'OK') {
-      console.error(status, result);
+      var msg = ''
+      switch (status) {
+        case 'NOT_FOUND':
+          msg += status + ': At least one of the locations specified in the request\'s origin, destination, or waypoint could be geocoded.'
+          break;
+        case 'ZERO_RESULTS':
+          msg += status + ': No route could be found between the origin and destination.'
+          break;
+        case 'MAX_ROUTE_LENGTH_EXCEEDED':
+          msg += status + ': The requested route is too long and cannot be processed.'
+          break;
+        case 'INVALID_REQUEST':
+          msg += status + ': The provided request was invalid.'
+          break;
+        case 'OVER_QUERY_LIMIT':
+          msg += status + ': The webpage has sent too many requests with the allowed time period.'
+          break;
+        case 'REQUEST_DENIED':
+          msg += status + ': The webpage is not allowed to use the direction service.'
+          break;
+        case 'UNKOWN_ERROR':
+        default:
+          msg += status + ': The directions request could be processed due to a server error. The request may succeed if you try again'
+          break;
+      }
+      messageNode.textContent = msg;
+      messageNode.classList.remove('hide');
+      messageNode.classList.add('show');
     }
     if (status == 'OK') {
       while (resultsNode.firstChild) {

@@ -77,6 +77,32 @@ html, body {
   color: #000;
 }
 
+#message-box.show {
+  display: block;
+  max-height: 100vh;
+}
+
+#message-box.hide {
+  display: none;
+}
+
+#message-box {
+  text-align: center;
+  max-width: 1140px;
+  position: relative;
+  top: -4px;
+  padding-top: calc(8px);
+  padding-bottom: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  text-align: center;
+  background-color: #ff6443;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+
+}
+
 #overlay {
   display: none;
   position: absolute;
@@ -113,6 +139,11 @@ html, body {
 #results {
   max-width: 1140px;
   padding-top: 202px;
+  margin: 0 auto;
+}
+
+#promotional {
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -181,12 +212,10 @@ html, body {
   text-align: center;
 }
 
-/* .step.left {
-  background-color: rgb(255, 0, 0);
+footer {
+  text-align: center;
+  max-width: 1140px;
+  margin: 20px auto;
+  color: #8e8d92;
+  font-size: 0.6em;
 }
-.step.right {
-  background-color: rgb(0, 255, 0);
-}
-.step.night {
-  background-color: rgb(0, 0, 255);
-} */
