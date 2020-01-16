@@ -80,12 +80,34 @@ html, body {
 #overlay {
   display: none;
   position: absolute;
-  padding: 202px;
+  box-sizing: border-box;
+  justify-content: center;
+  padding-top: 203px;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   left: 0;
-  background-color: #f00;
+  background-color: rgba(255,255,255,0.90);
+}
+
+#overlay.show {
+  display: flex;
+}
+
+@keyframes loading-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#loading {
+  width: 10vw;
+  height: 10vw;
+  margin-top: 10vw;
+  animation: loading-rotate 4.0s linear infinite;
 }
 
 #results {

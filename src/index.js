@@ -233,12 +233,15 @@ function* parseRoutesFromData(data) {
 
 document.getElementById('search').addEventListener('click', function(ev) {
   ev.preventDefault();
+  
   const directionsService = new google.maps.DirectionsService();
   const resultsNode = document.getElementById('results');
+  const overlayNode = document.getElementById('overlay');
+  overlayNode.classList.add('show');
 
   var start = document.getElementById('start').value;
   var end = document.getElementById('end').value;
-    var request = {
+  var request = {
     origin: start,
     destination: end,
     travelMode: 'TRANSIT',
@@ -246,6 +249,7 @@ document.getElementById('search').addEventListener('click', function(ev) {
     region: 'de-DE'
   };
   directionsService.route(request, function(result, status) {
+    overlayNode.classList.remove('show');
     if(status !== 'OK') {
       console.error(status, result);
     }
@@ -264,14 +268,15 @@ document.getElementById('search').addEventListener('click', function(ev) {
           adNode.setAttribute('data-ad-layout-key', '-gp-4+22-6q+7n');
           adNode.setAttribute('data-ad-client', 'ca-pub-5717136270400903');
           adNode.setAttribute('data-ad-slot', '6128457096');
+
           resultsNode.appendChild(adNode);
+          (adsbygoogle = window.adsbygoogle || []).push({});
         }
         i = i + 1;
         
         resultsNode.appendChild(routeNode);
       }
 
-      (adsbygoogle = window.adsbygoogle || []).push({});
     }
   });
 });

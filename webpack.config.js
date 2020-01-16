@@ -23,11 +23,9 @@ module.exports = {
       name: 'sunpassy',
       short_name: 'sunpassy',
       description: 'sunpassy is a handy companion for your sun-infused travels.',
-      background_color: '#faf7f5',
-      theme_color: '#ffcc00',
-      ios: {
-        'apple-mobile-web-app-status-bar-style': 'black-translucent'
-      },
+      background_color: '#ffffff',
+      theme_color: '#000000',
+      ios: true,
       icons: [
         {
           src: path.resolve('./logo.png'),
