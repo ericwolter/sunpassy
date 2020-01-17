@@ -311,16 +311,12 @@ document.getElementById('search').addEventListener('click', function(ev) {
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('SW registered: ', registration);
       setInterval(() => {
-        console.log('SW checking for update... ', registration);
         registration.update();
-      }, 5*1000);
+      }, 60*60*1000);
       registration.addEventListener('updatefound', () => {
         const installingWorker = registration.installing;
-        console.log('New SW installing: ', installingWorker);
         installingWorker.addEventListener('statechange', () => {
-          console.log('New SW installed: ', installingWorker);
           if(installingWorker.state === 'installed') {
             document.getElementById('notification').classList.add('show');
             document.getElementById('reload').addEventListener('click', () => {
@@ -333,7 +329,6 @@ if ('serviceWorker' in navigator) {
         });
       });
     }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
     });
     var refreshing;
     navigator.serviceWorker.addEventListener('controllerchange',
