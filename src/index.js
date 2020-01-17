@@ -293,8 +293,11 @@ document.getElementById('search').addEventListener('click', function(ev) {
           adNode.setAttribute('data-ad-client', 'ca-pub-5717136270400903');
           adNode.setAttribute('data-ad-slot', '6128457096');
 
+          const adScriptNode = document.createElement('script');
+          adScriptNode.textContent = "(adsbygoogle = window.adsbygoogle || []).push({});";
+
           resultsNode.appendChild(adNode);
-          (adsbygoogle = window.adsbygoogle || []).push({});
+          resultsNode.appendChild(adScriptNode);
         }
         i = i + 1;
         
