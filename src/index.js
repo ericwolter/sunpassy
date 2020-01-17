@@ -284,7 +284,7 @@ document.getElementById('search').addEventListener('click', function(ev) {
       
       var i = 0;
       for (const routeNode of parseRoutesFromData(result)) {
-        if(i % 2 === 0) {
+        if(i % 1 === 0) {
           const adNode = document.createElement('ins');
           adNode.setAttribute('class', 'adsbygoogle');
           adNode.setAttribute('style', 'display:block');
