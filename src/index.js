@@ -1,27 +1,17 @@
 import 'normalize.css';
 import './style.css';
-import tags from 'language-tags';
 
 import svgMoon from './moon.svg';
 import svgSunLeft from './sun_left.svg';
 import svgSunRight from './sun_right.svg';
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').then(registration => {
-      console.log('SW registered: ', registration);
-    }).catch(registrationError => {
-      console.log('SW registration failed: ', registrationError);
-    });
-  });
-}
 
 var adsense_api = document.createElement('script')
 adsense_api.setAttribute('src', 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js');
 adsense_api.setAttribute('async', true);
 document.head.appendChild(adsense_api);
 
-const region = tags(navigator.language).region().format() || 'de';
+const re = /^(?:(en-GB-oed|i-ami|i-bnn|i-default|i-enochian|i-hak|i-klingon|i-lux|i-mingo|i-navajo|i-pwn|i-tao|i-tay|i-tsu|sgn-BE-FR|sgn-BE-NL|sgn-CH-DE)|(art-lojban|cel-gaulish|no-bok|no-nyn|zh-guoyu|zh-hakka|zh-min|zh-min-nan|zh-xiang))$|^((?:[a-z]{2,3}(?:(?:-[a-z]{3}){1,3})?)|[a-z]{4}|[a-z]{5,8})(?:-([a-z]{4}))?(?:-([a-z]{2}|\d{3}))?((?:-(?:[\da-z]{5,8}|\d[\da-z]{3}))*)?((?:-[\da-wy-z](?:-[\da-z]{2,8})+)*)?(-x(?:-[\da-z]{1,8})+)?$|^(x(?:-[\da-z]{1,8})+)$/i;
+const region = re.exec(navigator.language)[5] || 'DE';
 var google_api = document.createElement('script');
 google_api.setAttribute('src','https://maps.googleapis.com/maps/api/js?key=AIzaSyAezL4IXXGbjmg6TK4Yxryr5BqUL4f21-I&region='+region);
 google_api.setAttribute('async', true);
@@ -314,3 +304,41 @@ document.getElementById('search').addEventListener('click', function(ev) {
     }
   });
 });
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then(registration => {
+      console.log('SW registered: ', registration);
+      setInterval(() => {
+        console.log('SW checking for update... ', registration);
+        registration.update();
+      }, 5*1000);
+      registration.addEventListener('updatefound', () => {
+        const installingWorker = registration.installing;
+        console.log('New SW installing: ', installingWorker);
+        installingWorker.addEventListener('statechange', () => {
+          console.log('New SW installed: ', installingWorker);
+          if(installingWorker.state === 'installed') {
+            document.getElementById('notification').classList.add('show');
+            document.getElementById('reload').addEventListener('click', () => {
+              registration.waiting.postMessage({type: 'SKIP_WAITING'});
+            });
+            document.getElementById('dismiss').addEventListener('click', () => {
+              document.getElementById('notification').classList.remove('show');
+            });
+          }
+        });
+      });
+    }).catch(registrationError => {
+      console.log('SW registration failed: ', registrationError);
+    });
+    var refreshing;
+    navigator.serviceWorker.addEventListener('controllerchange',
+      function() {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+      }
+    );
+  });
+}

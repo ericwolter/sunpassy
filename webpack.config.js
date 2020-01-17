@@ -40,7 +40,6 @@ module.exports = {
     }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
-      skipWaiting: true,
       // swSrc: "./src/sw.js",
       swDest: "sw.js",
       runtimeCaching: [{
@@ -53,6 +52,22 @@ module.exports = {
         }
       }, {
         urlPattern: new RegExp('^https://cdnjs\.cloudflare\.com/'),
+        handler: 'StaleWhileRevalidate',
+        options: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      }, {
+        urlPattern: new RegExp('^https://www\.google-analytics\.com/'),
+        handler: 'StaleWhileRevalidate',
+        options: {
+          cacheableResponse: {
+            statuses: [0, 200]
+          }
+        }
+      }, {
+        urlPattern: new RegExp('^https://pagead2\.googlesyndication\.com/'),
         handler: 'StaleWhileRevalidate',
         options: {
           cacheableResponse: {
