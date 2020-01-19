@@ -221,6 +221,10 @@ footer {
   font-size: 0.6em;
 }
 
+footer a {
+  color: #8e8d92;
+}
+
 #notification {
   display: none;
   position: fixed;
