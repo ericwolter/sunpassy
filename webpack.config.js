@@ -59,7 +59,7 @@ module.exports = {
           }
         }
       }, {
-        urlPattern: new RegExp('^https://www\.google-analytics\.com/'),
+        urlPattern: new RegExp('^https://www\.googletagmanager\.com/'),
         handler: 'StaleWhileRevalidate',
         options: {
           cacheableResponse: {
