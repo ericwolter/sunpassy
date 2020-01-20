@@ -310,7 +310,7 @@ document.getElementById('search').addEventListener('click', function(ev) {
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register(window.location.href+'/sw.js').then(registration => {
+    navigator.serviceWorker.register(window.location.href+'sw.js').then(registration => {
       setInterval(() => {
         registration.update();
       }, 60*60*1000);

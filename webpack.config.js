@@ -40,7 +40,6 @@ module.exports = {
     }),
     new WorkboxPlugin.GenerateSW({
       clientsClaim: true,
-      // swSrc: "./src/sw.js",
       swDest: "sw.js",
       runtimeCaching: [{
         urlPattern: new RegExp('^https://maps\.googleapis\.com/'),
